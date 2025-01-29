@@ -1,0 +1,53 @@
+
+<div id="player-container"></div>
+
+<script>
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player, refreshAllowed = false;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player-container', {
+            height: '1000',
+            width: '1000',
+            videoId: 'N75bznLGJGo',
+            events: {
+                'onReady': onPlayerReady,
+                'onStateChange': onPlayerStateChange
+            }
+        });
+    }
+
+    function onPlayerReady(event) {
+        event.target.mute();
+        event.target.playVideo();
+
+        setTimeout(() => {
+            event.target.unMute();
+            event.target.setVolume(1);
+        }, 3000);
+
+        setTimeout(() => {
+            refreshAllowed = true;
+        }, 30000);
+    }
+
+    function onPlayerStateChange(event) {
+        if (event.data === YT.PlayerState.PLAYING) {
+            let randomDelay = Math.floor(Math.random() * (70000 - 50000)) + 50000;
+            setTimeout(() => {
+                window.location.reload();
+            }, randomDelay);
+        }
+    }
+
+    window.addEventListener("beforeunload", function (event) {
+        if (!refreshAllowed) {
+            event.preventDefault();
+            event.returnValue = "Please wait at least 30 seconds before refreshing!";
+        }
+    });
+</script>
