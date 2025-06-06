@@ -1,53 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Secure Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Secure User Portal</h2>
 
-<div id="player-container"></div>
+    <form id="signup-form">
+      <h3>Sign Up</h3>
+      <input type="text" id="signup-name" placeholder="Full Name" required />
+      <input type="email" id="signup-email" placeholder="Email" required />
+      <input type="password" id="signup-password" placeholder="Password" required />
+      <button type="submit">Sign Up</button>
+    </form>
 
-<script>
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    <form id="login-form">
+      <h3>Login</h3>
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
 
-    var player, refreshAllowed = false;
+    <div id="message"></div>
+  </div>
 
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player-container', {
-            height: '1000',
-            width: '1000',
-            videoId: 'N75bznLGJGo',
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange
-            }
-        });
-    }
-
-    function onPlayerReady(event) {
-        event.target.mute();
-        event.target.playVideo();
-
-        setTimeout(() => {
-            event.target.unMute();
-            event.target.setVolume(1);
-        }, 3000);
-
-        setTimeout(() => {
-            refreshAllowed = true;
-        }, 30000);
-    }
-
-    function onPlayerStateChange(event) {
-        if (event.data === YT.PlayerState.PLAYING) {
-            let randomDelay = Math.floor(Math.random() * (70000 - 50000)) + 50000;
-            setTimeout(() => {
-                window.location.reload();
-            }, randomDelay);
-        }
-    }
-
-    window.addEventListener("beforeunload", function (event) {
-        if (!refreshAllowed) {
-            event.preventDefault();
-            event.returnValue = "Please wait at least 30 seconds before refreshing!";
-        }
-    });
-</script>
+  <script src="script.js"></script>
+</body>
+</html>
